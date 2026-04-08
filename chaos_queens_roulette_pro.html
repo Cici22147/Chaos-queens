@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Chaos Queens Roulette</title>
+<style>
+body {
+    margin:0;
+    background: radial-gradient(circle, #3a0066, #000);
+    color:white;
+    font-family: Arial, sans-serif;
+    text-align:center;
+}
+h1 {
+    margin-top:20px;
+    color:#ff4da6;
+}
+canvas {
+    margin-top:30px;
+    background: transparent;
+}
+button {
+    margin-top:20px;
+    padding:15px 30px;
+    font-size:18px;
+    border:none;
+    border-radius:12px;
+    background:#ff2e88;
+    color:white;
+    cursor:pointer;
+    box-shadow:0 0 15px #ff2e88;
+}
+textarea {
+    width:80%;
+    height:100px;
+    margin-top:20px;
+    border-radius:10px;
+    padding:10px;
+}
+</style>
+</head>
+<body>
+
+<h1>⚡️💓 CHAOS QUEENS 💓⚡️</h1>
+
+<canvas id="wheel" width="300" height="300"></canvas>
+
+<br>
+<button onclick="spin()">LANCER 🔥</button>
+
+<h3>✏️ Ajoute tes gages</h3>
+<textarea id="custom"></textarea><br>
+<button onclick="updateItems()">Mettre à jour</button>
+
+<audio id="spinSound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
+
+<script>
+let items = [
+"Drague 20 sec",
+"Déclaration absurde",
+"Imitation",
+"Couple toxique",
+"Voix bizarre",
+"Mini drama",
+"Faire rire",
+"Sujet gênant"
+];
+
+let angle = 0;
+const canvas = document.getElementById("wheel");
+const ctx = canvas.getContext("2d");
+
+function drawWheel(){
+    const arc = (2*Math.PI)/items.length;
+    for(let i=0;i<items.length;i++){
+        ctx.beginPath();
+        ctx.fillStyle = i % 2 ? "#ff2e88" : "#660033";
+        ctx.moveTo(150,150);
+        ctx.arc(150,150,150,i*arc,(i+1)*arc);
+        ctx.fill();
+        ctx.fillStyle="white";
+        ctx.save();
+        ctx.translate(150,150);
+        ctx.rotate(i*arc + arc/2);
+        ctx.fillText(items[i],60,0);
+        ctx.restore();
+    }
+}
+
+drawWheel();
+
+function spin(){
+    const sound = document.getElementById("spinSound");
+    sound.currentTime=0;
+    sound.play();
+
+    let spinAngle = Math.random()*2000 + 2000;
+    let duration = 3000;
+    let start = null;
+
+    function animate(timestamp){
+        if(!start) start = timestamp;
+        let progress = timestamp - start;
+        let ease = spinAngle * (1 - progress/duration);
+        angle += ease * 0.0005;
+
+        ctx.clearRect(0,0,300,300);
+        ctx.save();
+        ctx.translate(150,150);
+        ctx.rotate(angle);
+        ctx.translate(-150,-150);
+        drawWheel();
+        ctx.restore();
+
+        if(progress < duration){
+            requestAnimationFrame(animate);
+        }
+    }
+    requestAnimationFrame(animate);
+}
+
+function updateItems(){
+    const text = document.getElementById("custom").value;
+    if(text.trim() !== ""){
+        items = text.split("\n");
+        ctx.clearRect(0,0,300,300);
+        drawWheel();
+        alert("🔥 Roulette mise à jour !");
+    }
+}
+</script>
+
+</body>
+</html>
