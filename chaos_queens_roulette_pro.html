@@ -2,7 +2,8 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Chaos Queens Roulette V4</title>
+<title>Chaos Queens Roulette 🔥</title>
+
 <style>
 body{
 margin:0;
@@ -11,31 +12,46 @@ color:white;
 font-family:Arial;
 text-align:center;
 overflow:hidden;
+transition:0.3s;
 }
 
 h1{
 color:#ff4da6;
 margin-top:20px;
-text-shadow:0 0 20px #ff2e88;
+text-shadow:0 0 25px #ff2e88;
 animation: glowTitle 2s infinite alternate;
 }
 
 @keyframes glowTitle{
 from{ text-shadow:0 0 10px #ff2e88;}
-to{ text-shadow:0 0 30px #ff2e88;}
+to{ text-shadow:0 0 40px #ff2e88;}
 }
 
 #wrapper{
 position:relative;
 width:360px;
 margin:20px auto;
-animation: float 4s infinite ease-in-out;
 }
 
-@keyframes float{
-0%{transform:translateY(0);}
-50%{transform:translateY(-10px);}
-100%{transform:translateY(0);}
+/* 🔥 FEU AUTOUR */
+#wrapper::before{
+content:"";
+position:absolute;
+top:-15px;
+left:-15px;
+width:390px;
+height:390px;
+border-radius:50%;
+background: conic-gradient(#ff0000,#ff7300,#fffb00,#ff7300,#ff0000);
+filter: blur(25px);
+z-index:-1;
+animation: fireSpin 3s linear infinite;
+opacity:0.7;
+}
+
+@keyframes fireSpin{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
 }
 
 #pointer{
@@ -51,7 +67,7 @@ canvas{
 width:360px;
 height:360px;
 border-radius:50%;
-box-shadow:0 0 30px #ff2e88;
+box-shadow:0 0 40px #ff2e88;
 transition: transform 0.3s;
 }
 
@@ -63,27 +79,16 @@ border-radius:12px;
 background:#ff2e88;
 color:white;
 font-size:16px;
-box-shadow:0 0 15px #ff2e88;
-transition:0.2s;
-}
-
-button:hover{
-transform:scale(1.1);
-box-shadow:0 0 25px #ff2e88;
+box-shadow:0 0 20px #ff2e88;
 }
 
 #result{
 margin-top:15px;
-font-size:26px;
+font-size:28px;
 font-weight:bold;
 opacity:0;
 transform:scale(0.8);
 transition:0.4s;
-}
-
-.show{
-opacity:1 !important;
-transform:scale(1.2) !important;
 }
 
 .flash{
@@ -92,10 +97,11 @@ top:0;left:0;width:100%;height:100%;
 background:white;
 opacity:0;
 pointer-events:none;
-transition:0.2s;
+transition:0.3s;
 }
 </style>
 </head>
+
 <body>
 
 <div class="flash" id="flash"></div>
@@ -109,28 +115,21 @@ transition:0.2s;
 
 <button onclick="spin()">LANCER 🔥</button>
 
-<button onclick="chaosMode()">💀 CHAOS FINAL</button>
+<div id="result"></div>
 
-<div id="result">Résultat : ?</div>
-<iframe id="musicPlayer" width="0" height="0" frameborder="0" allow="autoplay"></iframe>
-<audio id="unlockSound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
+<audio id="musicPlayer"></audio>
+
 <script>
+
+// 🎵 TES MUSIQUES
 let playlist = [
-"https://www.youtube.com/embed/gAaN9WUO75Q",
-"https://www.youtube.com/embed/dgPauIRYNUw",
-"https://www.youtube.com/embed/IR4ujMOgxA4",
-"https://www.youtube.com/embed/B7hy6bTdrVQ",
-"https://www.youtube.com/embed/waU75jdUnYw",
-"https://www.youtube.com/embed/oqv35UZepIM",
-"https://www.youtube.com/embed/pfxyk1glEq4",
-"https://www.youtube.com/embed/kaoYLN4mOxg",
-"https://www.youtube.com/embed/HL1UzIK-flA",
-"https://www.youtube.com/embed/TSsFB241BHs",
-"https://www.youtube.com/embed/3tA6KH07u_Y",
-"https://www.youtube.com/embed/1zbfwEA8Xf0"
+"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Kenjox%20%26%20Natoxie%20Ft%20Twinsizz%20-%20Gr%C3%A9goire.mp3",
+"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Kenjox%20%26%20Natoxie%20Ft%20Sage%20-%20Opa.mp3"
 ];
 
+// 🔓 FIX IPHONE
 let audioUnlocked = false;
+
 let angle = 0;
 
 let items = [
@@ -153,7 +152,6 @@ ctx.arc(180,180,180,i*arc,(i+1)*arc);
 ctx.fill();
 
 ctx.fillStyle="white";
-ctx.font="14px Arial";
 ctx.save();
 ctx.translate(180,180);
 ctx.rotate(i*arc+arc/2);
@@ -166,26 +164,28 @@ drawWheel();
 function playRandomMusic(){
 let player = document.getElementById("musicPlayer");
 let randomIndex = Math.floor(Math.random() * playlist.length);
-let video = playlist[randomIndex];
-let id = video.split("/").pop();
-player.src = video + "?autoplay=1&mute=0&loop=1&playlist=" + id;
+
+player.pause();
+player.currentTime = 0;
+player.src = playlist[randomIndex];
+player.play().catch(()=>{});
 }
 
 function spin(){
 
-// 🔓 Débloque son iPhone au premier clic
-if(!audioUnlocked){
-let unlock = document.getElementById("unlockSound");
-unlock.play();
-
 let player = document.getElementById("musicPlayer");
-player.src = playlist[0] + "?autoplay=1&mute=0";
 
+// 🔓 DÉBLOCAGE IPHONE
+if(!audioUnlocked){
+player.src = playlist[0];
+player.play().catch(()=>{});
 audioUnlocked = true;
 }
 
-// 🎵 musique aléatoire
 playRandomMusic();
+
+// 🎡 animation début
+canvas.style.transform = "scale(1.1)";
 
 let spinAngle = Math.random()*2000+2000;
 let duration = 3000;
@@ -197,8 +197,7 @@ if(!start) start = t;
 let progress = t - start;
 let ease = spinAngle*(1-progress/duration);
 
-// ralentissement progressif
-angle += ease * 0.0005;
+angle += ease * 0.0006;
 
 ctx.save();
 ctx.translate(180,180);
@@ -207,9 +206,13 @@ ctx.translate(-180,-180);
 drawWheel();
 ctx.restore();
 
+// 💥 effet tremblement
+canvas.style.transform = "scale(1.1) rotate("+(Math.random()*6-3)+"deg)";
+
 if(progress < duration){
 requestAnimationFrame(animate);
 }else{
+canvas.style.transform = "scale(1)";
 showResult();
 }
 }
@@ -218,30 +221,37 @@ requestAnimationFrame(animate);
 }
 
 function showResult(){
-let arc = (2*Math.PI)/items.length;
 
-// 🔥 correction parfaite de la flèche
-let index = Math.floor(((-angle + Math.PI/2) % (2*Math.PI) + 2*Math.PI) % (2*Math.PI) / arc);
+let arc = (2*Math.PI)/items.length;
+let normalizedAngle = angle % (2*Math.PI);
+let index = Math.floor((items.length - (normalizedAngle/(2*Math.PI))*items.length)) % items.length;
 
 let res = items[index];
-document.getElementById("result").innerText = "🔥 " + res;
 
-// 💥 flash
+// 💬 TEXTE
+let resultDiv = document.getElementById("result");
+resultDiv.innerText = "🔥 " + res;
+resultDiv.style.opacity = "1";
+resultDiv.style.transform = "scale(1.5)";
+
+// 💥 FLASH
 let flash = document.getElementById("flash");
-flash.style.opacity = 0.8;
-setTimeout(()=>flash.style.opacity=0,200);
+flash.style.opacity = 1;
+setTimeout(()=>flash.style.opacity=0,300);
 
-// 🗣️ voix
-let msg = new SpeechSynthesisUtterance(res);
-msg.lang="fr-FR";
-speechSynthesis.speak(msg);
+// 💣 ZOOM
+document.body.style.transform = "scale(1.08)";
+setTimeout(()=>{
+document.body.style.transform = "scale(1)";
+},200);
+
+// reset
+setTimeout(()=>{
+resultDiv.style.opacity = "0";
+resultDiv.style.transform = "scale(0.8)";
+},2500);
 }
 
-function chaosMode(){
-items.push("💀 ULTIME CHAOS");
-drawWheel();
-alert("💀 MODE CHAOS ACTIVÉ");
-}
 </script>
 
 </body>
