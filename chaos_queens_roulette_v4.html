@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Chaos Queens Roulette V4</title>
+<style>
+body{
+margin:0;
+background: radial-gradient(circle,#3a0066,#000);
+color:white;
+font-family:Arial;
+text-align:center;
+overflow:hidden;
+}
+h1{color:#ff4da6;margin-top:20px;}
+#wrapper{position:relative;width:360px;margin:20px auto;}
+canvas{width:360px;height:360px;}
+#pointer{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:40px;}
+button{
+padding:15px 25px;
+margin-top:10px;
+border:none;
+border-radius:12px;
+background:#ff2e88;
+color:white;
+font-size:16px;
+box-shadow:0 0 15px #ff2e88;
+}
+#result{
+margin-top:15px;
+font-size:26px;
+font-weight:bold;
+}
+.flash{
+position:fixed;
+top:0;left:0;width:100%;height:100%;
+background:white;
+opacity:0;
+pointer-events:none;
+}
+</style>
+</head>
+<body>
+
+<div class="flash" id="flash"></div>
+
+<h1>⚡️💓 CHAOS QUEENS 💓⚡️</h1>
+
+<div id="wrapper">
+<div id="pointer">🔻</div>
+<canvas id="wheel" width="360" height="360"></canvas>
+</div>
+
+<button onclick="spin()">LANCER 🔥</button>
+<button onclick="toggleMusic()">🎵 Musique</button>
+<button onclick="chaosMode()">💀 CHAOS FINAL</button>
+
+<div id="result">Résultat : ?</div>
+
+<audio id="spinSound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
+<audio id="bgMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
+
+<script>
+let items = [
+{text:"Drague",color:"#ff2e88"},
+{text:"Drama",color:"#ff0066"},
+{text:"Spicy",color:"#ff4d4d"},
+{text:"Imitation",color:"#cc0066"},
+{text:"Jalousie",color:"#99004d"},
+{text:"Compliment",color:"#ff66a3"},
+{text:"Mini drama",color:"#ff3385"},
+{text:"Sujet gênant",color:"#cc0052"}
+];
+
+let angle=0;
+const canvas=document.getElementById("wheel");
+const ctx=canvas.getContext("2d");
+
+function drawWheel(){
+const arc=(2*Math.PI)/items.length;
+ctx.clearRect(0,0,360,360);
+
+for(let i=0;i<items.length;i++){
+ctx.beginPath();
+ctx.fillStyle=items[i].color;
+ctx.moveTo(180,180);
+ctx.arc(180,180,180,i*arc,(i+1)*arc);
+ctx.fill();
+
+ctx.fillStyle="white";
+ctx.font="14px Arial";
+ctx.save();
+ctx.translate(180,180);
+ctx.rotate(i*arc+arc/2);
+ctx.fillText(items[i].text,90,0);
+ctx.restore();
+}
+}
+drawWheel();
+
+function spin(){
+const sound=document.getElementById("spinSound");
+sound.currentTime=0;
+sound.play();
+
+let spinAngle=Math.random()*2000+2000;
+let duration=3000;
+let start=null;
+
+function animate(t){
+if(!start) start=t;
+let progress=t-start;
+let ease=spinAngle*(1-progress/duration);
+angle+=ease*0.0005;
+
+ctx.save();
+ctx.translate(180,180);
+ctx.rotate(angle);
+ctx.translate(-180,-180);
+drawWheel();
+ctx.restore();
+
+if(progress<duration){
+requestAnimationFrame(animate);
+}else{
+showResult();
+}
+}
+requestAnimationFrame(animate);
+}
+
+function showResult(){
+let index=Math.floor((items.length - (angle%(2*Math.PI))/(2*Math.PI)*items.length))%items.length;
+let res = items[index].text;
+document.getElementById("result").innerText="🔥 "+res;
+
+// flash effect
+let flash=document.getElementById("flash");
+flash.style.opacity=0.8;
+setTimeout(()=>flash.style.opacity=0,200);
+
+// voice
+let msg=new SpeechSynthesisUtterance(res);
+msg.lang="fr-FR";
+speechSynthesis.speak(msg);
+}
+
+function toggleMusic(){
+let music=document.getElementById("bgMusic");
+if(music.paused){music.play();}else{music.pause();}
+}
+
+function chaosMode(){
+items.push({text:"ULTIME CHAOS",color:"#ffffff"});
+drawWheel();
+alert("💀 MODE CHAOS ACTIVÉ");
+}
+</script>
+
+</body>
+</html>
