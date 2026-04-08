@@ -121,15 +121,12 @@ transition:0.3s;
 
 <script>
 
-// 🎵 TES MUSIQUES
 let playlist = [
 "https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Kenjox%20%26%20Natoxie%20Ft%20Twinsizz%20-%20Gr%C3%A9goire.mp3",
 "https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Kenjox%20%26%20Natoxie%20Ft%20Sage%20-%20Opa.mp3"
 ];
 
-// 🔓 FIX IPHONE
 let audioUnlocked = false;
-
 let angle = 0;
 
 let items = [
@@ -175,7 +172,7 @@ function spin(){
 
 let player = document.getElementById("musicPlayer");
 
-// 🔓 DÉBLOCAGE IPHONE
+// 🔓 FIX IPHONE
 if(!audioUnlocked){
 player.src = playlist[0];
 player.play().catch(()=>{});
@@ -184,7 +181,6 @@ audioUnlocked = true;
 
 playRandomMusic();
 
-// 🎡 animation début
 canvas.style.transform = "scale(1.1)";
 
 let spinAngle = Math.random()*2000+2000;
@@ -206,7 +202,7 @@ ctx.translate(-180,-180);
 drawWheel();
 ctx.restore();
 
-// 💥 effet tremblement
+// 💥 tremblement stylé
 canvas.style.transform = "scale(1.1) rotate("+(Math.random()*6-3)+"deg)";
 
 if(progress < duration){
@@ -223,8 +219,11 @@ requestAnimationFrame(animate);
 function showResult(){
 
 let arc = (2*Math.PI)/items.length;
-let normalizedAngle = angle % (2*Math.PI);
-let index = Math.floor((items.length - (normalizedAngle/(2*Math.PI))*items.length)) % items.length;
+
+// 🎯 ALIGNEMENT PARFAIT AVEC LA FLÈCHE
+let index = Math.floor(
+((Math.PI/2 - angle) % (2*Math.PI) + 2*Math.PI) % (2*Math.PI) / arc
+);
 
 let res = items[index];
 
