@@ -12,7 +12,6 @@ color:white;
 font-family:Arial;
 text-align:center;
 overflow:hidden;
-transition:0.3s;
 }
 
 h1{
@@ -33,7 +32,7 @@ width:360px;
 margin:20px auto;
 }
 
-/* 🔥 FEU AUTOUR */
+/* 🔥 FEU */
 #wrapper::before{
 content:"";
 position:absolute;
@@ -60,7 +59,7 @@ top:-10px;
 left:50%;
 transform:translateX(-50%);
 font-size:40px;
-text-shadow:0 0 15px white;
+text-shadow:0 0 15px red;
 }
 
 canvas{
@@ -68,7 +67,6 @@ width:360px;
 height:360px;
 border-radius:50%;
 box-shadow:0 0 40px #ff2e88;
-transition: transform 0.3s;
 }
 
 button{
@@ -81,30 +79,10 @@ color:white;
 font-size:16px;
 box-shadow:0 0 20px #ff2e88;
 }
-
-#result{
-margin-top:15px;
-font-size:28px;
-font-weight:bold;
-opacity:0;
-transform:scale(0.8);
-transition:0.4s;
-}
-
-.flash{
-position:fixed;
-top:0;left:0;width:100%;height:100%;
-background:white;
-opacity:0;
-pointer-events:none;
-transition:0.3s;
-}
 </style>
 </head>
 
 <body>
-
-<div class="flash" id="flash"></div>
 
 <h1>⚡️💓 CHAOS QUEENS 💓⚡️</h1>
 
@@ -115,18 +93,31 @@ transition:0.3s;
 
 <button onclick="spin()">LANCER 🔥</button>
 
-<div id="result"></div>
-
 <audio id="musicPlayer"></audio>
 
 <script>
 
+// 🎵 PLAYLIST COMPLETE
 let playlist = [
 "https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Kenjox%20%26%20Natoxie%20Ft%20Twinsizz%20-%20Gr%C3%A9goire.mp3",
-"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Kenjox%20%26%20Natoxie%20Ft%20Sage%20-%20Opa.mp3"
+"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Kenjox%20%26%20Natoxie%20Ft%20Sage%20-%20Opa.mp3",
+"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/S%C3%A9%20Miimii%20-%20Miimii%20KDS%20%26%20Dj%20Skycee%20(Paroles%20Lyrics).mp3",
+"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Meryl%20x%20Danthology%20-%20EDF%20Riddim%20remix.mp3",
+"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/The%20Weeknd%20-%20Earned%20It%20(from%20Fifty%20Shades%20Of%20Grey)%20(Official%20Lyric%20Video).mp3",
+"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Doja%20Cat%20-%20Streets%20(Official%20Audio).mp3",
+"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Needed%20Me.mp3",
+"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Cassie%20-%20Long%20Way%202%20Go.mp3",
+"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Mario%20-%20Let%20Me%20Love%20You%20(Lyrics).mp3",
+"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Tyla%20-%20CHANEL%20(Lyrics).mp3",
+"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Rihanna%20-%20Work%20ft.%20Drake.mp3",
+"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Tyla%20-%20Water.mp3",
+"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Chris%20Brown%20-%20Under%20The%20Influence%20(Lyrics).mp3"
 ];
 
+// 🔓 iPhone fix
 let audioUnlocked = false;
+let lastPlayed = -1;
+
 let angle = 0;
 
 let items = [
@@ -160,19 +151,29 @@ drawWheel();
 
 function playRandomMusic(){
 let player = document.getElementById("musicPlayer");
-let randomIndex = Math.floor(Math.random() * playlist.length);
+
+// 🎯 anti répétition
+let randomIndex;
+do{
+randomIndex = Math.floor(Math.random() * playlist.length);
+} while(randomIndex === lastPlayed);
+
+lastPlayed = randomIndex;
 
 player.pause();
 player.currentTime = 0;
 player.src = playlist[randomIndex];
+
+setTimeout(()=>{
 player.play().catch(()=>{});
+},100);
 }
 
 function spin(){
 
 let player = document.getElementById("musicPlayer");
 
-// 🔓 FIX IPHONE
+// 🔓 débloque iPhone
 if(!audioUnlocked){
 player.src = playlist[0];
 player.play().catch(()=>{});
@@ -209,46 +210,10 @@ if(progress < duration){
 requestAnimationFrame(animate);
 }else{
 canvas.style.transform = "scale(1)";
-showResult();
 }
 }
 
 requestAnimationFrame(animate);
-}
-
-function showResult(){
-
-let arc = (2*Math.PI)/items.length;
-
-// 🎯 ALIGNEMENT PARFAIT AVEC LA FLÈCHE
-let index = Math.floor(
-((Math.PI/2 - angle) % (2*Math.PI) + 2*Math.PI) % (2*Math.PI) / arc
-);
-
-let res = items[index];
-
-// 💬 TEXTE
-let resultDiv = document.getElementById("result");
-resultDiv.innerText = "🔥 " + res;
-resultDiv.style.opacity = "1";
-resultDiv.style.transform = "scale(1.5)";
-
-// 💥 FLASH
-let flash = document.getElementById("flash");
-flash.style.opacity = 1;
-setTimeout(()=>flash.style.opacity=0,300);
-
-// 💣 ZOOM
-document.body.style.transform = "scale(1.08)";
-setTimeout(()=>{
-document.body.style.transform = "scale(1)";
-},200);
-
-// reset
-setTimeout(()=>{
-resultDiv.style.opacity = "0";
-resultDiv.style.transform = "scale(0.8)";
-},2500);
 }
 
 </script>
