@@ -123,30 +123,33 @@ ctx.restore();
 drawWheel();
 
 function spin(){
-playRandomMusic();
-  let spinAngle=Math.random()*2000+2000;
-  let duration=3000;
-  let start=null;
-function animate(t){
-if(!start) start=t;
-let progress=t-start;
-let ease=spinAngle*(1-progress/duration);
-angle+=ease*0.0005;
+  playRandomMusic();
 
-ctx.save();
-ctx.translate(180,180);
-ctx.rotate(angle);
-ctx.translate(-180,-180);
-drawWheel();
-ctx.restore();
+  let spinAngle = Math.random()*2000+2000;
+  let duration = 3000;
+  let start = null;
 
-if(progress<duration){
-requestAnimationFrame(animate);
-}else{
-showResult();
-}
-}
-requestAnimationFrame(animate);
+  function animate(t){
+    if(!start) start = t;
+    let progress = t - start;
+    let ease = spinAngle*(1-progress/duration);
+    angle += ease*0.0005;
+
+    ctx.save();
+    ctx.translate(180,180);
+    ctx.rotate(angle);
+    ctx.translate(-180,-180);
+    drawWheel();
+    ctx.restore();
+
+    if(progress < duration){
+      requestAnimationFrame(animate);
+    } else {
+      showResult();
+    }
+  }
+
+  requestAnimationFrame(animate);
 }
 
 function showResult(){
