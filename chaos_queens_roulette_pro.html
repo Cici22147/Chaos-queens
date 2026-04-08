@@ -114,10 +114,8 @@ let playlist = [
 "https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Chris%20Brown%20-%20Under%20The%20Influence%20(Lyrics).mp3"
 ];
 
-// 🔓 iPhone fix
 let audioUnlocked = false;
 let lastPlayed = -1;
-
 let angle = 0;
 
 let items = [
@@ -152,11 +150,10 @@ drawWheel();
 function playRandomMusic(){
 let player = document.getElementById("musicPlayer");
 
-// 🎯 anti répétition
 let randomIndex;
 do{
 randomIndex = Math.floor(Math.random() * playlist.length);
-} while(randomIndex === lastPlayed);
+}while(randomIndex === lastPlayed);
 
 lastPlayed = randomIndex;
 
@@ -166,14 +163,14 @@ player.src = playlist[randomIndex];
 
 setTimeout(()=>{
 player.play().catch(()=>{});
-},100);
+},150);
 }
 
 function spin(){
 
 let player = document.getElementById("musicPlayer");
 
-// 🔓 débloque iPhone
+// 🔓 iPhone fix
 if(!audioUnlocked){
 player.src = playlist[0];
 player.play().catch(()=>{});
@@ -203,7 +200,6 @@ ctx.translate(-180,-180);
 drawWheel();
 ctx.restore();
 
-// 💥 tremblement stylé
 canvas.style.transform = "scale(1.1) rotate("+(Math.random()*6-3)+"deg)";
 
 if(progress < duration){
