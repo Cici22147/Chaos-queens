@@ -125,15 +125,17 @@ drawWheel();
 function spin(){
   playRandomMusic();
 
-  let spinAngle = Math.random()*2000+2000;
+  let spinAngle = Math.random() * 2000 + 2000;
   let duration = 3000;
   let start = null;
 
-  function animate(t){
-    if(!start) start = t;
-    let progress = t - start;
-    let ease = spinAngle*(1-progress/duration);
-    angle += ease*0.0005;
+  function animate(time){
+    if(!start) start = time;
+
+    let progress = time - start;
+    let rotation = spinAngle * (1 - progress / duration);
+
+    angle += rotation * 0.0005;
 
     ctx.save();
     ctx.translate(180,180);
