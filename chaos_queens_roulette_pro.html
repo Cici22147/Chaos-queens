@@ -57,9 +57,32 @@ pointer-events:none;
 <button onclick="chaosMode()">💀 CHAOS FINAL</button>
 
 <div id="result">Résultat : ?</div>
+<iframe id="musicPlayer" width="0" height="0" frameborder="0" allow="autoplay"></iframe>
 
-<audio id="spinSound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
-<audio id="bgMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
+<script>
+let playlist = [
+"https://www.youtube.com/embed/gAaN9WUO75Q",
+"https://www.youtube.com/embed/dgPauIRYNUw",
+"https://www.youtube.com/embed/IR4ujMOgxA4",
+"https://www.youtube.com/embed/B7hy6bTdrVQ"
+  "https://www.youtube.com/embed/waU75jdUnYw",
+"https://www.youtube.com/embed/oqv35UZepIM",
+"https://www.youtube.com/embed/pfxyk1glEq4",
+"https://www.youtube.com/embed/kaoYLN4mOxg",
+"https://www.youtube.com/embed/HL1UzIK-flA",
+"https://www.youtube.com/embed/TSsFB241BHs",
+"https://www.youtube.com/embed/3tA6KH07u_Y",
+"https://www.youtube.com/embed/1zbfwEA8Xf0"
+];
+
+function playRandomMusic(){
+let player = document.getElementById("musicPlayer");
+let randomIndex = Math.floor(Math.random() * playlist.length);
+let video = playlist[randomIndex];
+let id = video.split("/").pop();
+player.src = video + "?autoplay=1&loop=1&playlist=" + id;
+}
+</script>
 
 <script>
 let items = [
@@ -100,14 +123,10 @@ ctx.restore();
 drawWheel();
 
 function spin(){
-const sound=document.getElementById("spinSound");
-sound.currentTime=0;
-sound.play();
-
-let spinAngle=Math.random()*2000+2000;
-let duration=3000;
-let start=null;
-
+playRandomMusic();
+  let spinAngle=Math.random()*2000+2000;
+  let duration=3000;
+  let start=null;
 function animate(t){
 if(!start) start=t;
 let progress=t-start;
