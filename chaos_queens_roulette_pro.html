@@ -53,7 +53,7 @@ pointer-events:none;
 </div>
 
 <button onclick="spin()">LANCER 🔥</button>
-<button onclick="toggleMusic()">🎵 Musique</button>
+
 <button onclick="chaosMode()">💀 CHAOS FINAL</button>
 
 <div id="result">Résultat : ?</div>
@@ -170,10 +170,7 @@ msg.lang="fr-FR";
 speechSynthesis.speak(msg);
 }
 
-function toggleMusic(){
-let music=document.getElementById("bgMusic");
-if(music.paused){music.play();}else{music.pause();}
-}
+
 
 function chaosMode(){
 items.push({text:"ULTIME CHAOS",color:"#ffffff"});
