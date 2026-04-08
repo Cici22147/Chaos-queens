@@ -113,7 +113,7 @@ transition:0.2s;
 
 <div id="result">Résultat : ?</div>
 <iframe id="musicPlayer" width="0" height="0" frameborder="0" allow="autoplay"></iframe>
-
+<audio id="unlockSound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
 <script>
 let playlist = [
 "https://www.youtube.com/embed/gAaN9WUO75Q",
@@ -175,8 +175,12 @@ function spin(){
 
 // 🔓 Débloque son iPhone au premier clic
 if(!audioUnlocked){
+let unlock = document.getElementById("unlockSound");
+unlock.play();
+
 let player = document.getElementById("musicPlayer");
-player.src = playlist[0] + "?autoplay=1";
+player.src = playlist[0] + "?autoplay=1&mute=0";
+
 audioUnlocked = true;
 }
 
