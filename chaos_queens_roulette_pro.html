@@ -2,12 +2,12 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Chaos Queens Roulette 🔥</title>
+<title>Chaos Queens 💋</title>
 
 <style>
 body{
 margin:0;
-background: radial-gradient(circle,#2b004f,#000);
+background: radial-gradient(circle,#0d0010,#000);
 color:white;
 font-family:Arial;
 text-align:center;
@@ -17,78 +17,55 @@ overflow:hidden;
 h1{
 color:#ff4da6;
 margin-top:20px;
-text-shadow:0 0 25px #ff2e88;
-animation: glowTitle 2s infinite alternate;
+text-shadow:0 0 20px #ff2e88,0 0 40px #ff2e88;
 }
 
-@keyframes glowTitle{
-from{ text-shadow:0 0 10px #ff2e88;}
-to{ text-shadow:0 0 40px #ff2e88;}
+/* 🔻 flèche FIXE */
+#pointer{
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+font-size:60px;
+color:#ff2e88;
+text-shadow:0 0 20px #ff2e88,0 0 60px #ff2e88;
+z-index:9999;
 }
 
 #wrapper{
 position:relative;
-width:360px;
-margin:20px auto;
-}
-
-/* 🔥 FEU */
-#wrapper::before{
-content:"";
-position:absolute;
-top:-15px;
-left:-15px;
-width:390px;
-height:390px;
-border-radius:50%;
-background: conic-gradient(#ff0000,#ff7300,#fffb00,#ff7300,#ff0000);
-filter: blur(25px);
-z-index:-1;
-animation: fireSpin 3s linear infinite;
-opacity:0.7;
-}
-
-@keyframes fireSpin{
-0%{transform:rotate(0deg);}
-100%{transform:rotate(360deg);}
-}
-
-#pointer{
-position:absolute;
-top:-10px;
-left:50%;
-transform:translateX(-50%);
-font-size:40px;
-text-shadow:0 0 15px red;
+width:420px;
+margin:80px auto;
 }
 
 canvas{
-width:360px;
-height:360px;
+width:420px;
+height:420px;
 border-radius:50%;
-box-shadow:0 0 40px #ff2e88;
+box-shadow:0 0 60px #ff2e88;
 }
 
 button{
-padding:15px 25px;
-margin-top:10px;
+padding:15px 30px;
+margin-top:20px;
 border:none;
-border-radius:12px;
-background:#ff2e88;
+border-radius:20px;
+background:linear-gradient(45deg,#ff2e88,#ff0055);
 color:white;
-font-size:16px;
-box-shadow:0 0 20px #ff2e88;
+font-size:18px;
+box-shadow:0 0 30px #ff2e88;
 }
 </style>
 </head>
 
 <body>
 
-<h1>⚡️💓 CHAOS QUEENS 💓⚡️</h1>
+<h1>💋 CHAOS QUEENS 💋</h1>
+
+<div id="pointer">🔻</div>
 
 <div id="wrapper">
-<div id="pointer">🔻</div>
-<canvas id="wheel" width="360" height="360"></canvas>
+<canvas id="wheel" width="420" height="420"></canvas>
 </div>
 
 <button onclick="spin()">LANCER 🔥</button>
@@ -97,115 +74,115 @@ box-shadow:0 0 20px #ff2e88;
 
 <script>
 
-// 🎵 PLAYLIST COMPLETE
 let playlist = [
 "https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Kenjox%20%26%20Natoxie%20Ft%20Twinsizz%20-%20Gr%C3%A9goire.mp3",
-"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Kenjox%20%26%20Natoxie%20Ft%20Sage%20-%20Opa.mp3",
-"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/S%C3%A9%20Miimii%20-%20Miimii%20KDS%20%26%20Dj%20Skycee%20(Paroles%20Lyrics).mp3",
-"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Meryl%20x%20Danthology%20-%20EDF%20Riddim%20remix.mp3",
-"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/The%20Weeknd%20-%20Earned%20It%20(from%20Fifty%20Shades%20Of%20Grey)%20(Official%20Lyric%20Video).mp3",
-"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Doja%20Cat%20-%20Streets%20(Official%20Audio).mp3",
-"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Needed%20Me.mp3",
-"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Cassie%20-%20Long%20Way%202%20Go.mp3",
-"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Mario%20-%20Let%20Me%20Love%20You%20(Lyrics).mp3",
-"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Tyla%20-%20CHANEL%20(Lyrics).mp3",
-"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Rihanna%20-%20Work%20ft.%20Drake.mp3",
-"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Tyla%20-%20Water.mp3",
-"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Chris%20Brown%20-%20Under%20The%20Influence%20(Lyrics).mp3"
+"https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Kenjox%20%26%20Natoxie%20Ft%20Sage%20-%20Opa.mp3"
 ];
 
-let audioUnlocked = false;
-let lastPlayed = -1;
-let angle = 0;
+let audioUnlocked=false;
+let lastPlayed=-1;
+let angle=0;
 
-let items = [
-"Drague","Drama","Spicy","Imitation",
-"Jalousie","Compliment","Mini drama","Sujet gênant"
+// 🌈 couleurs néon
+let items=[
+{text:"Drague",color:"#ff4da6"},
+{text:"Drama",color:"#ff0033"},
+{text:"Spicy",color:"#ff6600"},
+{text:"Imitation",color:"#9933ff"},
+{text:"Jalousie",color:"#00ff99"},
+{text:"Compliment",color:"#ffd699"},
+{text:"Mini drama",color:"#ff66cc"},
+{text:"Sujet gênant",color:"#111111"}
 ];
 
-const canvas = document.getElementById("wheel");
-const ctx = canvas.getContext("2d");
+const canvas=document.getElementById("wheel");
+const ctx=canvas.getContext("2d");
 
 function drawWheel(){
-let arc = (2*Math.PI)/items.length;
-ctx.clearRect(0,0,360,360);
+let arc=(2*Math.PI)/items.length;
+ctx.clearRect(0,0,420,420);
 
 for(let i=0;i<items.length;i++){
+
+// 🎨 case
 ctx.beginPath();
-ctx.fillStyle = i%2 ? "#ff2e88" : "#660033";
-ctx.moveTo(180,180);
-ctx.arc(180,180,180,i*arc,(i+1)*arc);
+ctx.fillStyle=items[i].color;
+ctx.moveTo(210,210);
+ctx.arc(210,210,210,i*arc,(i+1)*arc);
 ctx.fill();
 
+// ✨ effet néon glow
+ctx.shadowColor = items[i].color;
+ctx.shadowBlur = 25;
+ctx.fill();
+
+// 📝 texte néon
+ctx.shadowBlur = 15;
 ctx.fillStyle="white";
+ctx.font="bold 16px Arial";
+
 ctx.save();
-ctx.translate(180,180);
+ctx.translate(210,210);
 ctx.rotate(i*arc+arc/2);
-ctx.fillText(items[i],90,0);
+ctx.fillText(items[i].text,120,0);
 ctx.restore();
+
+// reset shadow
+ctx.shadowBlur = 0;
 }
 }
 drawWheel();
 
 function playRandomMusic(){
-let player = document.getElementById("musicPlayer");
+let player=document.getElementById("musicPlayer");
 
 let randomIndex;
 do{
-randomIndex = Math.floor(Math.random() * playlist.length);
-}while(randomIndex === lastPlayed);
+randomIndex=Math.floor(Math.random()*playlist.length);
+}while(randomIndex===lastPlayed);
 
-lastPlayed = randomIndex;
+lastPlayed=randomIndex;
 
 player.pause();
-player.currentTime = 0;
-player.src = playlist[randomIndex];
+player.currentTime=0;
+player.src=playlist[randomIndex];
 
-setTimeout(()=>{
-player.play().catch(()=>{});
-},150);
+setTimeout(()=>player.play().catch(()=>{}),100);
 }
 
 function spin(){
 
-let player = document.getElementById("musicPlayer");
+let player=document.getElementById("musicPlayer");
 
-// 🔓 iPhone fix
 if(!audioUnlocked){
-player.src = playlist[0];
+player.src=playlist[0];
 player.play().catch(()=>{});
-audioUnlocked = true;
+audioUnlocked=true;
 }
 
 playRandomMusic();
 
-canvas.style.transform = "scale(1.1)";
-
-let spinAngle = Math.random()*2000+2000;
-let duration = 3000;
-let start = null;
+let spinAngle=Math.random()*2000+2000;
+let duration=3000;
+let start=null;
 
 function animate(t){
-if(!start) start = t;
+if(!start) start=t;
 
-let progress = t - start;
-let ease = spinAngle*(1-progress/duration);
+let progress=t-start;
+let ease=spinAngle*(1-progress/duration);
 
-angle += ease * 0.0006;
+angle+=ease*0.0006;
 
 ctx.save();
-ctx.translate(180,180);
+ctx.translate(210,210);
 ctx.rotate(angle);
-ctx.translate(-180,-180);
+ctx.translate(-210,-210);
 drawWheel();
 ctx.restore();
 
-canvas.style.transform = "scale(1.1) rotate("+(Math.random()*6-3)+"deg)";
-
-if(progress < duration){
+if(progress<duration){
 requestAnimationFrame(animate);
-}else{
-canvas.style.transform = "scale(1)";
 }
 }
 
