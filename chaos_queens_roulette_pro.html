@@ -2,66 +2,81 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Chaos Queens 💜</title>
+<title>La Mafia Roulette 💓⚡️</title>
 
 <style>
 body{
 margin:0;
-background: radial-gradient(circle,#0d0010,#000);
+background: radial-gradient(circle,#1a001f,#000);
 color:white;
 font-family:Arial;
 text-align:center;
 overflow:hidden;
 }
 
+/* 💓 titre */
 h1{
-color:#ff4dff;
+color:#ff4da6;
 margin-top:20px;
-text-shadow:0 0 20px #cc00ff,0 0 50px #ff00ff;
+font-size:28px;
+text-shadow:0 0 20px #ff2e88,0 0 40px #ff2e88;
 }
 
-/* 🔻 flèche fixe */
+/* 🔻 flèche FIXE */
 #pointer{
 position:fixed;
 top:20px;
 left:50%;
 transform:translateX(-50%);
-font-size:60px;
-color:#ff00ff;
-text-shadow:0 0 20px #ff00ff,0 0 60px #cc00ff;
+font-size:55px;
+color:#ff2e88;
+text-shadow:0 0 20px #ff2e88,0 0 50px #ff2e88;
 z-index:9999;
 }
 
+/* 🎡 wrapper */
 #wrapper{
 position:relative;
 width:420px;
 margin:80px auto;
 }
 
+/* 🎡 roue */
 canvas{
 width:420px;
 height:420px;
 border-radius:50%;
-box-shadow:0 0 60px #cc00ff;
+box-shadow:0 0 50px #ff2e88;
 }
 
-/* bouton glossy */
+/* 🎯 résultat */
+#result{
+margin-top:20px;
+font-size:26px;
+font-weight:bold;
+color:#ff4da6;
+text-shadow:0 0 15px #ff2e88;
+opacity:0;
+transition:0.3s;
+}
+
+/* bouton */
 button{
 padding:15px 30px;
 margin-top:20px;
 border:none;
-border-radius:25px;
-background:linear-gradient(145deg,#ff00ff,#9900ff);
+border-radius:20px;
+background:linear-gradient(45deg,#ff2e88,#9900ff);
 color:white;
 font-size:18px;
-box-shadow:0 0 20px #ff00ff;
+box-shadow:0 0 25px #ff2e88;
 }
 </style>
 </head>
 
 <body>
 
-<h1>💜 CHAOS QUEENS 💜</h1>
+<h1>💓⚡️ LA MAFIA ROULETTE ⚡️💓</h1>
 
 <div id="pointer">🔻</div>
 
@@ -71,10 +86,13 @@ box-shadow:0 0 20px #ff00ff;
 
 <button onclick="spin()">LANCER 🔥</button>
 
+<div id="result"></div>
+
 <audio id="musicPlayer"></audio>
 
 <script>
 
+// 🎵 playlist
 let playlist = [
 "https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Kenjox%20%26%20Natoxie%20Ft%20Twinsizz%20-%20Gr%C3%A9goire.mp3",
 "https://raw.githubusercontent.com/Cici22147/Chaos-queens/main/Kenjox%20%26%20Natoxie%20Ft%20Sage%20-%20Opa.mp3"
@@ -84,16 +102,16 @@ let audioUnlocked=false;
 let lastPlayed=-1;
 let angle=0;
 
-// 💜 couleurs glossy violet
+// 💓 couleurs mafia (pas arc-en-ciel)
 let items=[
-{text:"Drague",color:"#ff4dff"},
-{text:"Drama",color:"#cc00ff"},
-{text:"Spicy",color:"#ff00cc"},
+{text:"Drague",color:"#ff2e88"},
+{text:"Drama",color:"#ff0033"},
+{text:"Spicy",color:"#ff1a75"},
 {text:"Imitation",color:"#9900ff"},
-{text:"Jalousie",color:"#b300ff"},
-{text:"Compliment",color:"#ff80ff"},
-{text:"Mini drama",color:"#e600e6"},
-{text:"Sujet gênant",color:"#660066"}
+{text:"Jalousie",color:"#cc0066"},
+{text:"Compliment",color:"#ff66b2"},
+{text:"Mini drama",color:"#e60073"},
+{text:"Sujet gênant",color:"#660033"}
 ];
 
 const canvas=document.getElementById("wheel");
@@ -105,50 +123,25 @@ ctx.clearRect(0,0,420,420);
 
 for(let i=0;i<items.length;i++){
 
-let start=i*arc;
-let end=(i+1)*arc;
-
-// 🎨 base
 ctx.beginPath();
+ctx.fillStyle=items[i].color;
 ctx.moveTo(210,210);
-ctx.arc(210,210,210,start,end);
-ctx.closePath();
-
-// 🌈 dégradé glossy
-let grad = ctx.createRadialGradient(210,210,50,210,210,210);
-grad.addColorStop(0,"#ffffff22"); // reflet centre
-grad.addColorStop(0.3,items[i].color);
-grad.addColorStop(1,"#000000");
-
-ctx.fillStyle = grad;
-
-// ✨ glow néon
-ctx.shadowColor = items[i].color;
-ctx.shadowBlur = 30;
-
+ctx.arc(210,210,210,i*arc,(i+1)*arc);
 ctx.fill();
 
-// 💎 effet reflet glossy (haut)
-ctx.beginPath();
-ctx.moveTo(210,210);
-ctx.arc(210,210,210,start,start+arc/2);
-ctx.closePath();
-
-let gloss = ctx.createLinearGradient(0,0,0,420);
-gloss.addColorStop(0,"rgba(255,255,255,0.25)");
-gloss.addColorStop(1,"rgba(255,255,255,0)");
-
-ctx.fillStyle = gloss;
+// glow
+ctx.shadowColor=items[i].color;
+ctx.shadowBlur=20;
 ctx.fill();
 
-// 📝 texte
-ctx.shadowBlur = 0;
+// texte
+ctx.shadowBlur=0;
 ctx.fillStyle="white";
-ctx.font="bold 16px Arial";
+ctx.font="bold 15px Arial";
 
 ctx.save();
 ctx.translate(210,210);
-ctx.rotate(start+arc/2);
+ctx.rotate(i*arc+arc/2);
 ctx.fillText(items[i].text,120,0);
 ctx.restore();
 }
@@ -205,10 +198,33 @@ ctx.restore();
 
 if(progress<duration){
 requestAnimationFrame(animate);
+}else{
+showResult();
 }
 }
 
 requestAnimationFrame(animate);
+}
+
+function showResult(){
+
+let arc=(2*Math.PI)/items.length;
+
+// 🎯 calcul correct
+let index=Math.floor(
+((Math.PI/2 - angle)%(2*Math.PI)+2*Math.PI)%(2*Math.PI)/arc
+);
+
+let result=items[index].text;
+
+let resultDiv=document.getElementById("result");
+resultDiv.innerText="🔥 "+result;
+resultDiv.style.opacity="1";
+
+// petit effet
+setTimeout(()=>{
+resultDiv.style.opacity="0";
+},2500);
 }
 
 </script>
