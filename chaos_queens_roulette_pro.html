@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Chaos Queens 💋</title>
+<title>Chaos Queens 💜</title>
 
 <style>
 body{
@@ -15,20 +15,20 @@ overflow:hidden;
 }
 
 h1{
-color:#ff4da6;
+color:#ff4dff;
 margin-top:20px;
-text-shadow:0 0 20px #ff2e88,0 0 40px #ff2e88;
+text-shadow:0 0 20px #cc00ff,0 0 50px #ff00ff;
 }
 
-/* 🔻 flèche FIXE */
+/* 🔻 flèche fixe */
 #pointer{
 position:fixed;
 top:20px;
 left:50%;
 transform:translateX(-50%);
 font-size:60px;
-color:#ff2e88;
-text-shadow:0 0 20px #ff2e88,0 0 60px #ff2e88;
+color:#ff00ff;
+text-shadow:0 0 20px #ff00ff,0 0 60px #cc00ff;
 z-index:9999;
 }
 
@@ -42,25 +42,26 @@ canvas{
 width:420px;
 height:420px;
 border-radius:50%;
-box-shadow:0 0 60px #ff2e88;
+box-shadow:0 0 60px #cc00ff;
 }
 
+/* bouton glossy */
 button{
 padding:15px 30px;
 margin-top:20px;
 border:none;
-border-radius:20px;
-background:linear-gradient(45deg,#ff2e88,#ff0055);
+border-radius:25px;
+background:linear-gradient(145deg,#ff00ff,#9900ff);
 color:white;
 font-size:18px;
-box-shadow:0 0 30px #ff2e88;
+box-shadow:0 0 20px #ff00ff;
 }
 </style>
 </head>
 
 <body>
 
-<h1>💋 CHAOS QUEENS 💋</h1>
+<h1>💜 CHAOS QUEENS 💜</h1>
 
 <div id="pointer">🔻</div>
 
@@ -83,16 +84,16 @@ let audioUnlocked=false;
 let lastPlayed=-1;
 let angle=0;
 
-// 🌈 couleurs néon
+// 💜 couleurs glossy violet
 let items=[
-{text:"Drague",color:"#ff4da6"},
-{text:"Drama",color:"#ff0033"},
-{text:"Spicy",color:"#ff6600"},
-{text:"Imitation",color:"#9933ff"},
-{text:"Jalousie",color:"#00ff99"},
-{text:"Compliment",color:"#ffd699"},
-{text:"Mini drama",color:"#ff66cc"},
-{text:"Sujet gênant",color:"#111111"}
+{text:"Drague",color:"#ff4dff"},
+{text:"Drama",color:"#cc00ff"},
+{text:"Spicy",color:"#ff00cc"},
+{text:"Imitation",color:"#9900ff"},
+{text:"Jalousie",color:"#b300ff"},
+{text:"Compliment",color:"#ff80ff"},
+{text:"Mini drama",color:"#e600e6"},
+{text:"Sujet gênant",color:"#660066"}
 ];
 
 const canvas=document.getElementById("wheel");
@@ -104,31 +105,52 @@ ctx.clearRect(0,0,420,420);
 
 for(let i=0;i<items.length;i++){
 
-// 🎨 case
+let start=i*arc;
+let end=(i+1)*arc;
+
+// 🎨 base
 ctx.beginPath();
-ctx.fillStyle=items[i].color;
 ctx.moveTo(210,210);
-ctx.arc(210,210,210,i*arc,(i+1)*arc);
-ctx.fill();
+ctx.arc(210,210,210,start,end);
+ctx.closePath();
 
-// ✨ effet néon glow
+// 🌈 dégradé glossy
+let grad = ctx.createRadialGradient(210,210,50,210,210,210);
+grad.addColorStop(0,"#ffffff22"); // reflet centre
+grad.addColorStop(0.3,items[i].color);
+grad.addColorStop(1,"#000000");
+
+ctx.fillStyle = grad;
+
+// ✨ glow néon
 ctx.shadowColor = items[i].color;
-ctx.shadowBlur = 25;
+ctx.shadowBlur = 30;
+
 ctx.fill();
 
-// 📝 texte néon
-ctx.shadowBlur = 15;
+// 💎 effet reflet glossy (haut)
+ctx.beginPath();
+ctx.moveTo(210,210);
+ctx.arc(210,210,210,start,start+arc/2);
+ctx.closePath();
+
+let gloss = ctx.createLinearGradient(0,0,0,420);
+gloss.addColorStop(0,"rgba(255,255,255,0.25)");
+gloss.addColorStop(1,"rgba(255,255,255,0)");
+
+ctx.fillStyle = gloss;
+ctx.fill();
+
+// 📝 texte
+ctx.shadowBlur = 0;
 ctx.fillStyle="white";
 ctx.font="bold 16px Arial";
 
 ctx.save();
 ctx.translate(210,210);
-ctx.rotate(i*arc+arc/2);
+ctx.rotate(start+arc/2);
 ctx.fillText(items[i].text,120,0);
 ctx.restore();
-
-// reset shadow
-ctx.shadowBlur = 0;
 }
 }
 drawWheel();
