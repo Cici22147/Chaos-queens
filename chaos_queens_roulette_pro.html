@@ -7,7 +7,7 @@
 <style>
 body{
 margin:0;
-background: radial-gradient(circle,#1a001f,#000);
+background: radial-gradient(circle,#1a0015,#000);
 color:white;
 font-family:Arial;
 text-align:center;
@@ -18,20 +18,30 @@ overflow:hidden;
 h1{
 color:#ff4da6;
 margin-top:20px;
-font-size:28px;
-text-shadow:0 0 20px #ff2e88,0 0 40px #ff2e88;
+font-size:30px;
+text-shadow:0 0 20px #ff2e88;
 }
 
-/* 🔻 flèche FIXE */
-#pointer{
+/* ✨ fond ambiance */
+body::before{
+content:"";
 position:fixed;
-top:20px;
+width:100%;
+height:100%;
+background: radial-gradient(circle at center, rgba(255,0,100,0.1), transparent);
+z-index:-1;
+}
+
+/* 🔻 flèche parfaitement centrée */
+#pointer{
+position:absolute;
+top:-25px;
 left:50%;
 transform:translateX(-50%);
-font-size:55px;
+font-size:60px;
 color:#ff2e88;
-text-shadow:0 0 20px #ff2e88,0 0 50px #ff2e88;
-z-index:9999;
+text-shadow:0 0 20px #ff2e88;
+z-index:10;
 }
 
 /* 🎡 wrapper */
@@ -46,18 +56,15 @@ canvas{
 width:420px;
 height:420px;
 border-radius:50%;
-box-shadow:0 0 50px #ff2e88;
+box-shadow:0 0 40px #ff2e88;
 }
 
-/* 🎯 résultat */
-#result{
-margin-top:20px;
-font-size:26px;
-font-weight:bold;
+/* 🎮 éléments visuels */
+#decor{
+margin-top:10px;
+font-size:14px;
 color:#ff4da6;
-text-shadow:0 0 15px #ff2e88;
-opacity:0;
-transition:0.3s;
+opacity:0.7;
 }
 
 /* bouton */
@@ -66,7 +73,7 @@ padding:15px 30px;
 margin-top:20px;
 border:none;
 border-radius:20px;
-background:linear-gradient(45deg,#ff2e88,#9900ff);
+background:linear-gradient(45deg,#ff2e88,#ff0033);
 color:white;
 font-size:18px;
 box-shadow:0 0 25px #ff2e88;
@@ -78,15 +85,14 @@ box-shadow:0 0 25px #ff2e88;
 
 <h1>💓⚡️ LA MAFIA ROULETTE ⚡️💓</h1>
 
-<div id="pointer">🔻</div>
-
 <div id="wrapper">
+<div id="pointer">🔻</div>
 <canvas id="wheel" width="420" height="420"></canvas>
 </div>
 
 <button onclick="spin()">LANCER 🔥</button>
 
-<div id="result"></div>
+<div id="decor">💋 Jeu • Chaos • Drama • Vérité 💋</div>
 
 <audio id="musicPlayer"></audio>
 
@@ -102,16 +108,16 @@ let audioUnlocked=false;
 let lastPlayed=-1;
 let angle=0;
 
-// 💓 couleurs mafia (pas arc-en-ciel)
+// 🎨 couleurs cohérentes (sans violet)
 let items=[
 {text:"Drague",color:"#ff2e88"},
 {text:"Drama",color:"#ff0033"},
-{text:"Spicy",color:"#ff1a75"},
-{text:"Imitation",color:"#9900ff"},
-{text:"Jalousie",color:"#cc0066"},
-{text:"Compliment",color:"#ff66b2"},
-{text:"Mini drama",color:"#e60073"},
-{text:"Sujet gênant",color:"#660033"}
+{text:"Spicy",color:"#ff1a4d"},
+{text:"Imitation",color:"#cc0044"},
+{text:"Jalousie",color:"#990033"},
+{text:"Compliment",color:"#ff6699"},
+{text:"Mini drama",color:"#ff3366"},
+{text:"Sujet gênant",color:"#330000"}
 ];
 
 const canvas=document.getElementById("wheel");
@@ -129,9 +135,9 @@ ctx.moveTo(210,210);
 ctx.arc(210,210,210,i*arc,(i+1)*arc);
 ctx.fill();
 
-// glow
+// glow léger
 ctx.shadowColor=items[i].color;
-ctx.shadowBlur=20;
+ctx.shadowBlur=15;
 ctx.fill();
 
 // texte
@@ -198,33 +204,10 @@ ctx.restore();
 
 if(progress<duration){
 requestAnimationFrame(animate);
-}else{
-showResult();
 }
 }
 
 requestAnimationFrame(animate);
-}
-
-function showResult(){
-
-let arc=(2*Math.PI)/items.length;
-
-// 🎯 calcul correct
-let index=Math.floor(
-((Math.PI/2 - angle)%(2*Math.PI)+2*Math.PI)%(2*Math.PI)/arc
-);
-
-let result=items[index].text;
-
-let resultDiv=document.getElementById("result");
-resultDiv.innerText="🔥 "+result;
-resultDiv.style.opacity="1";
-
-// petit effet
-setTimeout(()=>{
-resultDiv.style.opacity="0";
-},2500);
 }
 
 </script>
